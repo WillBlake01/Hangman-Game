@@ -1,0 +1,45 @@
+* {
+	box-sizing: border-box;
+	background-color: black;
+}
+
+#main-image {
+	height: 300px;
+	width: 960px;
+	max-width: none;
+	margin: 0 auto;
+}
+
+#game-box-one {
+	position: relative;
+	left: 220px;
+	height: 400px;
+	width: 260px;
+	border-style: dotted;
+	border-color: white;
+	float: left;
+}
+
+#second-image {
+	height: 190px;
+	width: 240px;
+	padding: 20px;
+	margin-left: 5px;
+}
+
+#game-box-two {
+	position: relative;
+	left: 220px;
+	height: 400px;
+	width: 260px;
+	border-style: dotted;
+	border-color: white;
+	color: white;
+	text-align: center;
+	float: left;
+}
+
+p {
+	margin-top: 20px;
+	font-family: 'Orbitron', sans-serif;
+}
