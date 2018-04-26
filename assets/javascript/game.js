@@ -146,6 +146,7 @@ var hangmanGame = {
 		}
 
 		if (win) {
+			audioOnLoad.pause();
 			this.wins = this.wins + 1;
 			document.querySelector('#wins').innerHTML = this.wins;
 
@@ -158,6 +159,8 @@ var hangmanGame = {
 };
 
 hangmanGame.setupGame();
+var audioOnLoad = new Audio('assets/audio/track-01.wav');
+audioOnLoad.play();
 document.onkeyup = function(event) {
 	hangmanGame.letterGuessed = String.fromCharCode(event.keyCode).toLowerCase();
 	hangmanGame.updatePage(hangmanGame.letterGuessed);
