@@ -1,110 +1,164 @@
-  // Hangman object
-	var hangmanGame = {
+// Hangman object
+var hangmanGame = {
 
 	// Object of all words that can be chosen, along with info such as their picture and a song clip.
 	wordsToPick: {
-		Hawkins: {
+		hawkins: {
 			picture: 'image-01.jpg',
 			song: 'track-02',
-			preview: 'assets/audio/track-02'
+			preview: 'assets/audio/track-02.wav'
 		},
-		Indiana: {
+		indiana: {
 			picture: 'image-02.jpg',
 			song: 'track-03',
-			preview: 'assets/audio/track-03'
+			preview: 'assets/audio/track-03.wav'
 		},
-		Eleven: {
+		eleven: {
 			picture: 'image-03.jpg',
 			song: 'track-04',
-			preview: 'assets/audio/track-04'
+			preview: 'assets/audio/track-04.wav'
 		},
-		Demogorgon: {
+		demogorgon: {
 			picture: 'image-04.jpg',
 			song: 'track-05',
-			preview: 'assets/audio/track-05'
+			preview: 'assets/audio/track-05.wav'
 		},
-		Dartanion: {
+		dartanion: {
 			picture: 'image-05.jpg',
 			song: 'track-06',
-			preview: 'assets/audio/track-06'
+			preview: 'assets/audio/track-06.wav'
 		},
-		'The Upside Down': {
+		'the upside down': {
 			picture: 'image-06.jpg',
 			song: 'track-07',
-			preview: 'assets/audio/track-07'
+			preview: 'assets/audio/track-07.wav'
 		},
-		'Mike Wheeler': {
+		'mike wheeler': {
 			picture: 'image-07.jpg',
 			song: 'track-08',
-			preview: 'assets/audio/track-08'
+			preview: 'assets/audio/track-08.wav'
 		},
-		'Will Byers': {
+		'will byers': {
 			picture: 'image-08.jpg',
 			song: 'track-09',
-			preview: 'assets/audio/track-09'
+			preview: 'assets/audio/track-09.wav'
 		},
-		'Jim Hopper': {
+		'jim hopper': {
 			picture: 'image-09.jpg',
 			song: 'track-10',
-			preview: 'assets/audio/track-10'
+			preview: 'assets/audio/track-10.wav'
 		},
 	},
 
-//Initial declaration of variables
-wordInPlay: null,
-lettersOfTheWord: [],
-matchedLetters: [],
-guessedLetters: [],
-guessesLeft: 0,
-totalGuesses: 0,
-letterGuessed: null,
-wins: 0,
+	//Initial declaration of variables
+	wordInPlay: null,
+	lettersOfTheWord: [],
+	matchedLetters: [],
+	guessedLetters: [],
+	guessesLeft: 0,
+	totalGuesses: 0,
+	letterGuessed: null,
+	wins: 0,
 
-//Setting onkey function
-document.onkeyup = function() {
-	var userguess = String.fromCharCode(event.keyCode).
-		toLowerCase();
+	setupGame: function() {
+		var objKeys = Object.keys(this.wordsToPick);
+		this.wordInPlay = objKeys[Math.floor(Math.random() * objKeys.length)];
 
-	console.log(userguess);
-}
+		this.lettersOfTheWord = this.wordInPlay.split('');
+		this.rebuildWordView();
+		this.processUpdateTotalGuesses();
+	},
 
-console.log(randomWord);
+	updatePage: function(letter) {
+		if (this.guessesLeft === 0) {
+			this.restartGame();
+		} else {
+			this.updateGuesses(letter);
+			this.updateMatchedLetters(letter);
+			this.rebuildWordView();
 
-//Choose random solution word
-function chooseWord () {
-	var randomWord = words[Math.floor(Math.random()*words.length)];
-}
+			if (this.updateWins() === true) {
+			this.restartGame();
+			}
+		}
+	},
 
-//Adding empty spots for letters to solution words
-function blanksFromAnswer (answerWord) {
-	var result = "_";
-	for(i = 0; i < randomWord.length; i++) {
-		text += result;
+	updateGuesses: function(letter) {
+		if ((this.guessedLetters.indexOf(letter) === -1) && (this.lettersOfTheWord.indexOf(letter) === -1)) {
+			this.guessedLetters.push(letter);
+			this.guessesLeft--;
+			document.querySelector('#guesses-remaining').innerHTML = this.guessesLeft;
+			document.querySelector('#guessed-letters').innerHTML = 
+			this.guessedLetters.join('', '');
+		}
+	},
+
+	processUpdateTotalGuesses: function() {
+		this.totalGuesses = this.lettersOfTheWord.length + 5;
+		this.guessesLeft = this.totalGuesses;
+		document.querySelector('#guesses-remaining').innerHTML = this.guessesLeft;
+	},
+
+	updateMatchedLetters: function(letter) {
+		for (var i = 0; i < this.lettersOfTheWord.length; i++) {
+			if ((letter === this.lettersOfTheWord[i]) && (this.matchedLetters.indexOf(letter) === -1)) {
+				this.matchedLetters.push(letter);
+			}
+		}
+	},
+
+	rebuildWordView: function() {
+		var wordView = '';
+		for (var i = 0; i < this.lettersOfTheWord.length; i++) {
+			if (this.matchedLetters.indexOf(this.lettersOfTheWord[i]) !== -1) {
+				wordView += this.lettersOfTheWord[i];
+			} 	else {
+				wordView += '&nbsp;_&nbsp;';
+			}
+		}
+		document.querySelector('#current-word').innerHTML = wordView;
+	},
+
+	restartGame: function () {
+		document.querySelector('#guessed-letters').innerHTML = '';
+		this.wordInPlay = null;
+		this.lettersOfTheWord = [];
+		this.matchedLetters = [];
+		this.guessedLetters = [];
+		this.guessesLeft = 0;
+		this.totalGuesses = 0;
+		this.letterGuessed = null;
+		this.setupGame();
+		this.rebuildWordView();
+	},
+
+	updateWins: function() {
+		var win;
+		if (this.matchedLetters.length === 0) {
+			win = false;
+		} else {
+			win = true;
+		}
+		for (var i = 0; i < this.lettersOfTheWord.length; i++) {
+			if (this.matchedLetters.indexOf(this.lettersOfTheWord[i]) === -1) {
+				win = false;
+			}
+		}
+
+		if (win) {
+			this.wins = this.wins + 1;
+			document.querySelector('#wins').innerHTML = this.wins;
+
+			var audio = new Audio(this.wordsToPick[this.wordInPlay].preview);
+			audio.play();
+			return true;
+		}
+		return false;
 	}
-	return result;
-}
+};
 
-//Capturing guessed letters
-function alterAt (n,c,result) {
-	return(result.substr(0, n) + c + result.substr(n + 1));
-}
-
-function guessLetter (letter, shown, answer) {
-	var checkLetter = -1;
-	checkLetter = answer.indexOf(letter);
-	while (checkLetter >= 0) {
-		shown = alterAt(checkLetter,letter,shown);
-		checkLetter = answer.indexOf(letter,checkLetter +1);
-	}
-	return shown;
-	document.body.innerHTML = guessLetter(letter, shown, answer);
-}
-
-//Adding innerHTML to divs
-var html = '<p>PRESS ANY KEY TO GET<br>STARTED!<br></p>' +
-'<p><br>WINS<br>' + wins + '</p>' + '<p><br>CURRENT WORD<br>' + randomWord + '</P>' + '<p><br>NUMBER OF GUESSES REMAINING<br>' +
-remGuesses + '</p>' + '<p><br>LETTERS ALREADY GUESSED<br>' + guessed + '</p>';
-
-document.querySelector('#game-box-two').innerHTML = html;
-
+hangmanGame.setupGame();
+document.onkeyup = function(event) {
+	hangmanGame.letterGuessed = String.fromCharCode(event.keyCode).toLowerCase();
+	hangmanGame.updatePage(hangmanGame.letterGuessed);
 };

@@ -13,27 +13,33 @@
 
 </head>
 <body>
-
+	<div class='container'>
 	<div>
 		<img id='main-image' src='assets/images/strangerthingsposter.jpg' alt='Stranger Things Poster'>
 	</div>
-<div class='container'>
-	<div id='game-box-one'>
-		<img id='second-image' src='assets/images/strangerthingseleven.jpg' alt='eleven'>
+		<div id='game-box-one'>
+			<img id='second-image' src='assets/images/strangerthingseleven.jpg' alt='eleven'>
+		</div>
+		<div id='game-box-two'>
+				<p>PRESS ANY KEY TO GET STARTED</p>
+				<div>
+					<p>WINS</p>
+					<div id='wins'></div>
+				</div>
+				<div>
+					<p>CURRENT WORD</p>
+					<div id='current-word'></div>
+				</div>
+				<div>
+					<p>GUESSES REMAINING</p>
+					<div id='guesses-remaining'></div>
+				</div>
+				<div>
+					<p>LETTERS ALREADY GUESSED</p>
+					<div id='guessed-letters'></div>
+				</div>
+		</div>
 	</div>
-	<div id='game-box-two'>
-			<div class='container-title'>
-				<div class='input-area'><p>PRESS ANY KEY TO GET<br>STARTED!</p></div>
-				<input type='text' id='letter-input' maxlength='1'/>
-			</div>
-			<p>WINS</p>
-			<div class='word-display'>CURRENT WORD</div>
-			<p>NUMBER OF GUESSES REMAINING</p>
-			<div class='input-area' id='guessed-letters'><p>LETTERS ALREADY GUESSED</p>
-
-			</div>
-</div>
-
 <script type='text/javascript' src='./assets/javascript/game.js'></script>
 </body>
 </html>
