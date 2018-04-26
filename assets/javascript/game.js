@@ -88,7 +88,7 @@ var hangmanGame = {
 			this.guessedLetters.push(letter);
 			this.guessesLeft--;
 			document.querySelector('#guesses-remaining').innerHTML = this.guessesLeft;
-			document.querySelector('#guessed-letters').innerHTML = 
+			document.querySelector('#guessed-letters').innerHTML =
 			this.guessedLetters.join('', '');
 		}
 	},
