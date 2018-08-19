@@ -146,10 +146,8 @@ var hangmanGame = {
 		}
 
 		if (win) {
-			audioOnLoad.pause();
 			this.wins = this.wins + 1;
 			document.querySelector('#wins').innerHTML = this.wins;
-
 			var audio = new Audio(this.wordsToPick[this.wordInPlay].preview);
 			audio.play();
 			return true;
